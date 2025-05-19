@@ -4,38 +4,38 @@ import { TiLocationArrow } from "react-icons/ti";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+
 gsap.registerPlugin(ScrollTrigger);
+const totalVideos = 4;
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadedVideos, setLoadedVideos] = useState(0);
+  const [loadedCount, setLoadedCount] = useState(0);
 
-  const totalVideos = 4;
-  const nextVideoRef = useRef(true);
-  console.log(nextVideoRef);
-  const upcomingVideoIndex = (currentIndex % totalVideos) + 1; //(prev) => (prev + 1) % 4
+  const nextVideoRef = useRef(null);
+  const nextIndex = (currentIndex % totalVideos) + 1; //(prev) => (prev + 1) % 4
 
   const handleVideoLoad = () => {
-    setLoadedVideos(upcomingVideoIndex);
+    setLoadedCount(nextIndex);
   };
   const handleMiniVideoClick = () => {
     setHasClicked(true);
-    setCurrentIndex(upcomingVideoIndex);
+    setCurrentIndex(nextIndex);
   };
 
   useEffect(() => {
-    if (loadedVideos === totalVideos - 1) {
+    if (loadedCount >= totalVideos) {
       setIsLoading(false);
     }
-  }, [loadedVideos]);
+  }, [loadedCount]);
 
   useGSAP(
     () => {
       if (hasClicked) {
-        gsap.set("#next-video", { visibility: "visible" });
+        gsap.set("#transition-video", { visibility: "visible" });
 
-        gsap.to("#next-video", {
+        gsap.to("#transition-video", {
           transformOrigin: "center center",
           scale: 1,
           width: "100%",
@@ -44,7 +44,7 @@ const Hero = () => {
           ease: "power1.inOut",
           onStart: () => nextVideoRef.current.play(),
         });
-        gsap.from("#current-video", {
+        gsap.from("#mini-video", {
           transformOrigin: "center center",
           scale: 0,
           duration: 1.5,
@@ -90,34 +90,36 @@ const Hero = () => {
         className=" relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-100"
       >
         <div>
+          {/* Mini Video Button */}
           <div className="border mask-clip-path absolute-center absolute  z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
             <div
               onClick={handleMiniVideoClick}
               className="origin-center scale-50 opacity-10 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
             >
-              {/* This is a button in center for upcoming video */}
               <video
-                src={getVideoSrc(upcomingVideoIndex)}
+                src={getVideoSrc(nextIndex)}
                 ref={nextVideoRef}
                 loop
                 muted
-                id="current-video"
+                id="mini-video"
                 className="size-64 origin-center scale-150 object-cover object-center"
                 onLoadedData={handleVideoLoad}
               />
             </div>
           </div>
-          {/* This is for next video on click with zoom-in animation */}
+
+          {/* Transition Video Animation */}
           <video
             src={getVideoSrc(currentIndex)}
             ref={nextVideoRef}
             loop
             muted
-            id="next-video"
+            id="transition-video"
             className="absolute z-20 size-64 invisible absolute-center object-center object-cover"
             onLoadedData={handleVideoLoad}
           />
-          {/* This is current video playing in the background */}
+
+          {/* Background Video */}
           <video
             src={getVideoSrc(
               currentIndex === totalVideos - 1 ? 1 : currentIndex
@@ -125,11 +127,13 @@ const Hero = () => {
             autoPlay
             loop
             muted
-            id="next-video"
+            id="transition-video"
             className="absolute left-0 top-0 size-full object-center object-cover"
             onLoadedData={handleVideoLoad}
           />
         </div>
+
+        {/* Text Content */}
         <h1 className="spacial-font hero-heading z-40 absolute bottom-5 right-5 text-blue-100">
           G<b>a</b>ming
         </h1>
@@ -150,6 +154,8 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Fallback Black Gaming Text */}
       <h1 className="spacial-font hero-heading  absolute bottom-5 right-5 text-black">
         G<b>a</b>ming
       </h1>
