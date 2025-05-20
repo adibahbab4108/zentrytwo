@@ -14,7 +14,7 @@ const Hero = () => {
   const [loadedCount, setLoadedCount] = useState(0);
 
   const nextVideoRef = useRef(null);
-  const nextIndex = (currentIndex % totalVideos) + 1; //(prev) => (prev + 1) % 4
+  const nextIndex = (currentIndex % totalVideos) + 1; //or (prev) => (prev + 1) % 4
 
   const handleVideoLoad = () => {
     setLoadedCount(nextIndex);
