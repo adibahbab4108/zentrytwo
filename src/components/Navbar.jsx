@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
-import { useGSAP } from "@gsap/react";
-import gsap from 'gsap'
-
 const navItems = ["Nexus", "Valut", "Prologue", "About", "Content"];
 
 const Navbar = () => {
@@ -17,7 +14,7 @@ const Navbar = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > 450) {
+      if (currentScrollY > 550) {
         navContainer.current.classList.add("bg-black/80");
       } else {
         navContainer.current.classList.remove("bg-black/80");
@@ -35,11 +32,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+
   const toggleAudioIndicator = () => {
     setIsAudioPlaying((prev) => !prev);
     setIsIndicatorActive((prev) => !prev);
   };
- 
+
   useEffect(() => {
     if (isAudioPlaying) audioElementRef.current.play();
     else audioElementRef.current.pause();
@@ -62,7 +60,7 @@ const Navbar = () => {
             />
           </div>
           <div className="flex h-full items-center">
-            <div className="hidden md:block">
+            <div className="block">
               {navItems.map((item, i) => (
                 <a
                   key={i}
