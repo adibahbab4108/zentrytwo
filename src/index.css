@@ -96,7 +96,7 @@ body {
     will-change: opacity, transform;
   }
   .bento-tilt_1 {
-    @apply relative col-span-2 overflow-hidden rounded-md transition-transform duration-300 ease-out;
+    @apply relative overflow-hidden rounded-md transition-transform duration-300 ease-out;
   }
 
   .bento-tilt_2 {
