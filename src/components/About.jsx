@@ -30,6 +30,7 @@ const About = () => {
           Welcome to Zentry2
         </h2>
         <AnimatedTitle
+          textColor="text-black"
           title="disc<b>o</b>ver the world's <br/> l<b>a</b>rgest shared adventure"
           containerClass="mt-5 text-center text-3xl md:5px lg:text-7xl leading-[0.8] uppercase   "
         />
